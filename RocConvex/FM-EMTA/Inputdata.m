@@ -1,8 +1,8 @@
 function [dataset,labelset,name,Rep] = Inputdata(s)
 %INPUTDATA 此处显示有关此函数的摘要
 %   此处显示详细说明
-    filepath = 'C:\Users\GGbond\Desktop\师兄代码\舒生达师兄论文\舒生达-工作资料\舒生达-工作资料\';
-    Rep = 20;
+    filepath = '   C:/Users/admin/Desktop/';
+    Rep = 5;
     
     switch s
         case 1
@@ -11,7 +11,7 @@ function [dataset,labelset,name,Rep] = Inputdata(s)
             labelset = load([filepath,'data_large/small/secom/secom_label.csv']);
             dataset = dataset';
             labelset = labelset';
-
+       
       case 13
             name = 'madelon';
             s = load([filepath,'data_large/small/madelon.mat']);
@@ -25,6 +25,7 @@ function [dataset,labelset,name,Rep] = Inputdata(s)
             dataset = dataset';
             labelset = labelset';
             labelset(labelset==1)=0;labelset(labelset==2)=1;
+
         case 3
             name = 'PCMAC';
             s = load([filepath,'data_large/PCMAC.mat']);
@@ -52,12 +53,14 @@ function [dataset,labelset,name,Rep] = Inputdata(s)
             labelset = (s.Y)';
             labelset(labelset==1)=0;labelset(labelset==2)=1;
             name = 'PGE';
+
         case 12
             name = 'SMK_CAN_187';
             s = load([filepath,'data_large/SMK_CAN_187.mat']);
             dataset = (s.X)';
             labelset = (s.Y)';
             labelset(labelset==1)=0;labelset(labelset==2)=1;
+
         case 7
             name = 'p53';
             dataset = load([filepath,'data_large/p53/data.csv']);
@@ -80,6 +83,7 @@ function [dataset,labelset,name,Rep] = Inputdata(s)
             s = load([filepath,'data_large/CLLSUB111.mat']);
             dataset = (s.X)';
             labelset = (s.Y)';
+
         case 5
             name = 'GLIOMA';
             s = load([filepath,'data_large/GLIOMA.mat']);

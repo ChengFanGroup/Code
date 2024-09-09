@@ -1,5 +1,8 @@
 function pareto = GetConvexHull(position)
+% 返回的是pareto层的点在position中的序号]
+%获得凸包解集
 
+%直接调用matlab凸包函数来做
 position = [0 0;position;1 1];
 if(size(position,1)<3)
     ConvexHull=position;
@@ -20,10 +23,14 @@ else
     end
 end
 
+
+
+
 if(length(ConvexHull)==1||length(ConvexHull)==2)
     pareto=ConvexHull;
     return;
 end
+
 
 ConvexHull(1,:)=[];
 tempposition=ConvexHull;
@@ -47,6 +54,7 @@ allupmost=tempposition(allupmost,:);
 % [~,downmostleft]=min(alldownmost(:,1));
 [~,upmostleft]=max(allupmost(:,1));%最上边的点中最右边的
 
+
 leftmostup=allleftmost(leftmostup,:);
 upmostleft=allupmost(upmostleft,:);
 
@@ -54,9 +62,15 @@ leftmost=findindex(tempposition,leftmostup);
 upmost=findindex(tempposition,upmostleft);
 
 
+
+
+
 if(leftmost==upmost)
     pareto(1)=leftmost;
 else
+
+
+
 
 uptemp=upmost;
 % downtemp=downmost;
@@ -75,5 +89,7 @@ i=i+1;
 pareto(i)=uptemp;
 end
 pareto=ConvexHull(pareto,:);
+
+
 
 

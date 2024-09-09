@@ -27,31 +27,11 @@ function Offspring = KnowTransferCrossover(MatingPool,guidingSolutions,Boundary,
             end
         end
         
-%         %模拟二进制交叉
-%         Offspring = zeros(N,D);
-%         for i = 1 : 2 : N
-%             x1 = MatingPool((i+1)/2,:);
-%             r = randi([1,size(guidingSolutions,1)]);%随机引导解
-%             x2 = guidingSolutions(r,:);
-%             beta = zeros(1,D);
-%             miu  = rand(1,D);
-%             beta(miu<=0.5) = (2*miu(miu<=0.5)).^(1/(DisC+1));
-%             beta(miu>0.5)  = (2-2*miu(miu>0.5)).^(-1/(DisC+1));
-%             beta = beta.*(-1).^randi([0,1],1,D);
-%             beta(rand(1,D)>ProC) = 1;
-%             Offspring(i,:)   = (x1 + x2)/2+beta.*(x1 - x2)/2;
-%             Offspring(i+1,:) = (x1 + x2)/2-beta.*(x1 - x2)/2;
-%         end
+
 
         %多项式变异
         MaxValue = repmat(Boundary(1,:),N,1);
         MinValue = repmat(Boundary(2,:),N,1);
-%         k    = rand(N,D);
-%         miu  = rand(N,D);
-%         Temp = k<=ProM & miu<0.5;
-%         Offspring(Temp) = Offspring(Temp)+(MaxValue(Temp)-MinValue(Temp)).*((2.*miu(Temp)+(1-2.*miu(Temp)).*(1-(Offspring(Temp)-MinValue(Temp))./(MaxValue(Temp)-MinValue(Temp))).^(DisM+1)).^(1/(DisM+1))-1);
-%         Temp = k<=ProM & miu>=0.5; 
-%         Offspring(Temp) = Offspring(Temp)+(MaxValue(Temp)-MinValue(Temp)).*(1-(2.*(1-miu(Temp))+2.*(miu(Temp)-0.5).*(1-(MaxValue(Temp)-Offspring(Temp))./(MaxValue(Temp)-MinValue(Temp))).^(DisM+1)).^(1/(DisM+1)));
 
         %越界处理
         Offspring(Offspring>MaxValue) = MaxValue(Offspring>MaxValue);

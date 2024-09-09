@@ -1,4 +1,4 @@
-   function [population,ObjV_pop,FrontNo,CrowdDis,off_pop,off_obj] = SubEvolveTrain_U(subpop,ObjV_pop,FrontNo,CrowdDis,whethertrain,traindataset,Boundary)
+function [population,ObjV_pop,FrontNo,CrowdDis,off_pop,off_obj] = SubEvolveTrain_U(subpop,ObjV_pop,FrontNo,CrowdDis,whethertrain,traindataset,Boundary)
 %%%%%%%%%%%%%%%%%
     
         %——————————1.产生子代————————————————
@@ -20,7 +20,7 @@
         %合并父子种群       
         newpopulation = [subpop;Offspring];
         functionvalue=[ObjV_pop;ObjV_offspring];
-        
+      
 %         %找出候选
         [U] = splitpopulation(functionvalue);%无冗余索引
         [U_in,ImpPoint] = splitpopulation2(functionvalue(U,:));

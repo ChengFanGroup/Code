@@ -1,10 +1,11 @@
+
 clc;
 clear;
 
 %%
 dbstop if error;
-for s = 1 : 12
-    %导入的data-每个样本占据矩阵一行  
+for s = 10 : 10
+    %导入的data-每个样本占据矩阵一行
     [datasetsource,whether,name,Rep] = Inputdata(s);%datasetnumber代表当前测试的数据集
     dirpath=['jg_test\',name];%储存的文件夹路径
     disp([name,'-start']);
@@ -41,9 +42,7 @@ for i = 1 : repetition%遍数
     Indices(whether==1) = Indices2;
     
      for crossnumber = 1 : K
-%          if(mod(crossnumber,2) ~= 0)
-%             fprintf('-----第%d折\n',crossnumber);
-%          end
+
         %按折构造训练、测试数据
         datasettrain = datasetsource(Indices ~= crossnumber,:);
         whethertrain = whether(Indices ~= crossnumber);
@@ -89,9 +88,7 @@ end
          fprintf('%.3f %.3f\n',performance(1),performance(2));
           fprintf('--------------\n');
           fprintf('%.3f %.3f\n',Mean_HV_test(1),Mean_HV_test(2));
-%          fprintf('--------------\n');
-%         fprintf('%.3f %.3f\n',MeanTime(1),MeanTime(2));
-        
+
         
         
         if exist(dirpath) == 0

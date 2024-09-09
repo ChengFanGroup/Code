@@ -1,4 +1,7 @@
 function sum=Calculatearea(results)
+% results=rand(100,2);
+%按x轴fpr从小到大排序。
+
 
 results = [0 0;results;1 1];
 results=sortrows(results);
