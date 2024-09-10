@@ -1,7 +1,7 @@
 function [dataset,labelset,name,Rep] = Inputdata(s)
-%INPUTDATA ´Ë´¦ÏÔÊ¾ÓĞ¹Ø´Ëº¯ÊıµÄÕªÒª
-%   ´Ë´¦ÏÔÊ¾ÏêÏ¸ËµÃ÷
-    filepath = '   C:/Users/admin/Desktop/';
+%INPUTDATA æ­¤å¤„æ˜¾ç¤ºæœ‰å…³æ­¤å‡½æ•°çš„æ‘˜è¦
+%   æ­¤å¤„æ˜¾ç¤ºè¯¦ç»†è¯´æ˜
+    filepath = '';
     Rep = 5;
     
     switch s
@@ -92,9 +92,9 @@ function [dataset,labelset,name,Rep] = Inputdata(s)
             
     end
     
-         %%%%%¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª
+         %%%%%â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”
     
-            dataset = mapminmax(dataset);%mapminmaxº¯Êı¶Ô¾ØÕóµÄÃ¿Ò»ĞĞ¹éÒ»»¯
+            dataset = mapminmax(dataset);%mapminmaxå‡½æ•°å¯¹çŸ©é˜µçš„æ¯ä¸€è¡Œå½’ä¸€åŒ–
             dataset = dataset';
             
             
