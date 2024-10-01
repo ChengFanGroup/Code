@@ -9,7 +9,7 @@ dataNames = {'TOX_171'};
 for dataIndex = 1:numel(dataNames)
     %% 数据集加载,预处理
     dataName = dataNames{dataIndex};
-    load(['./' dataName]);                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+    load(['dataset/' dataName]);                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 
     data = mapminmax(data',0,1)';
     data(isnan(data)) = 0;
