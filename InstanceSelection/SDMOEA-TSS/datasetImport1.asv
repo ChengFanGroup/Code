@@ -1,0 +1,41 @@
+function y=datasetImport1(gg)
+%导入数据集
+a='';
+switch gg
+    case 1
+         a='glass.txt';
+    case 2
+         a='led7digit.txt';
+    case 3
+         a='balance.txt';
+    case 4
+        a='flare.dat';
+    case 5
+        a='COLL20.txt';
+    case 6
+        a='morphological.arff';
+    case 7
+        a='semeion.txt';
+    case 8
+        a='splice.dat';
+    case 9
+        a='page-blocks.txt';
+    case 10
+        a='optdigits.dat';
+    case 11
+        a='satimage.txt';
+    case 12
+        a='penbased.txt';
+    case 13
+        a='balance.txt';
+    case 14
+        a='vowel.dat';
+    case 15
+        a='shuttle_seed_2_nrows_2000.txt';
+    case 16
+        a='yeast.txt';
+    case 17
+        a=''
+end
+y=importdata(a);
+disp(a);

@@ -1,0 +1,1 @@
+function [e,etr,size] = Calresult(obj,)

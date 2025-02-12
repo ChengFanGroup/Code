@@ -1,0 +1,14 @@
+function [Train_Dataset,Train_Label,Test_Dataset,Test_Label] = getTrainTest(data,label,Indices)
+ %randSelect=unidrnd(5);
+ numS=size(data,1);
+ randSelect=randperm(numS);
+ trainSize=round(0.8*numS);
+ testSize=round(0.2*numS);
+ Train_Dataset=data()
+ Train_Dataset=data(Indices~=randSelect,:);
+ Train_Label=label(Indices~=randSelect,:);
+ Test_Dataset=data(Indices==randSelect,:);
+ Test_Label=label(Indices==randSelect,:);
+
+end
+

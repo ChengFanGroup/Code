@@ -1,0 +1,207 @@
+ 
+clear
+clc
+%Input image杈撳叆鍥惧儚鏁版嵁
+%load('D:\Data\Urban\Urban_162.mat')
+% load('D:\Data\Urban\end6_groundTruth.mat')  鐪熷疄鍥惧儚锛屾瘮杈冪鍏冪殑鏃讹拷?锟戒娇锟??
+% reference = M; %reference of endmembers   绔厓鐨勫弬锟??
+% 
+% load Urban_R1621.mat
+% load end6_groundTruth.mat
+% reference = M;
+% X = Y./1000;  %2-dimensional input image  
+
+load samson_1.mat
+load end3.mat
+reference = M;
+reference(:,3)=reference(:,3).*0.1;
+X = V;
+
+% load CupriteS1_R188.mat
+% load CupriteS1_groundtreth.mat
+% reference = M;
+% X = Y./1000; %250.190
+
+% load jasperRidge2_R198.mat
+% load end4.mat
+% reference = M.*5;
+% X = Y./1000; %100.100
+
+
+
+[L,N] = size(X);
+row = 95;
+col = 95;
+
+
+image_3d = zeros(row,col,L);
+for i = 1:L
+    image_3d(:,:,i) = reshape(X(i,:),row,col);
+end
+P = 3;   % Number of endmembers
+
+% [rgb] = func_hyperImshow(image_3d,[64,52,36]); % func_hyperImshow(3D高光谱图像,[R,G,B])
+
+% 
+% load('C:\Users\chnk\Desktop\data\urban\MODPSO_data5.mat')
+% load('C:\Users\chnk\Desktop\data\urban\IMODPSO_data4.mat')
+% load('C:\Users\chnk\Desktop\data\urban\MODE_data4.mat')
+% load('C:\Users\chnk\Desktop\data\urban\MYEA_data5.mat')
+% % load MYEA_data.mat
+% load('C:\Users\chnk\Desktop\data\urban\DPSO_data.mat')
+% load('C:\Users\chnk\Desktop\data\urban\NFINDER_data.mat')
+
+% load('C:\Users\chnk\Desktop\data\samson\MODPSO_data3.mat')
+% load('C:\Users\chnk\Desktop\data\samson\IMODPSO_data1.mat')
+% load('C:\Users\chnk\Desktop\data\samson\MODE_data4.mat')
+% load('C:\Users\chnk\Desktop\data\samson\MYEA_data4.mat')
+% load('C:\Users\chnk\Desktop\data\samson\DPSO_data.mat')
+% load('C:\Users\chnk\Desktop\data\samson\NFINDER_data.mat')
+
+% load('C:\Users\chnk\Desktop\data\jasper\MODPSO_data3.mat')
+% load('C:\Users\chnk\Desktop\data\jasper\IMODPSO_data1.mat')
+% load('C:\Users\chnk\Desktop\data\jasper\MODE_data2.mat')
+% load('C:\Users\chnk\Desktop\data\jasper\MYEA_data2.mat')
+% load('C:\Users\chnk\Desktop\data\jasper\DPSO_data.mat')
+% load('C:\Users\chnk\Desktop\data\jasper\NFINDER_data.mat')
+% 
+
+% rmse = 0.084;  
+% save NFINDER_data  rmse V0 SAM6 time6
+% 
+% V=0.0037; 
+% save DPSO_data f_gbest V SAM5 time5 gbest
+
+
+% load MODPSO_data.mat
+% load IMODPSO_data.mat
+% load MODE_data.mat
+% load MYEA_data.mat
+
+
+PF=[1,0.02]; %urban
+% PF=[0.008,0.1]; %jasper
+[HV1,PopObj1] = HV(f_GBA,PF);
+[HV2,PopObj2] = HV(If_GBA,PF);
+[HV3,PopObj3] = HV(Ds,PF);
+[HV4,PopObj4] = HV(Ms,PF);
+
+
+
+
+
+
+
+% subplot(3,4,1);
+scatter(0.0037,f_gbest,'filled','v','DisplayName','DPSO');
+hold on;
+scatter(V0,0.0854,'filled','<','DisplayName','NFINDER');
+hold on;
+scatter(f_GBA(:,1),f_GBA(:,2),'+','DisplayName','MODPSO'); 
+hold on;
+scatter(If_GBA(:,1),If_GBA(:,2),'x','DisplayName','IMODPSO');
+hold on;
+scatter(Ds(:,1),Ds(:,2),'*','DisplayName','(u+λ)MODE');
+hold on;
+scatter(Ms(:,1),Ms(:,2),'filled','h','DisplayName','MY');
+hold on;
+
+legend('DPSO','NFINDER','MODPSO','IMODPSO','(u+λ)MODE','MY')
+
+subplot(3,4,2);
+generations=0:5:200;
+plot(generations,log10(recordfit1(1,:)),'-+'); %'-+b实线，+号，颜色'
+hold on;
+plot(generations,log10(recordfit2(1,:)),'-x');
+hold on;
+plot(generations,log10(recordfit3(1,:)),'-*');
+hold on;
+plot(generations,log10(recordfit4(1,:)),'-h');
+hold on;
+legend('MODPSO','IMODPSO','(u+λ)MODE','MY')
+
+subplot(3,4,3);
+generations=0:5:200;
+plot(generations,log10(recordfit1(2,:)),'-+'); %'-+b实线，+号，颜色'
+hold on;
+plot(generations,log10(recordfit2(2,:)),'-x');
+hold on;
+plot(generations,log10(recordfit3(2,:)),'-*');
+hold on;
+plot(generations,log10(recordfit4(2,:)),'-h');
+hold on;
+legend('MODPSO','IMODPSO','(u+λ)MODE','MY')
+
+% 
+% num=1:1:L;
+% endmember1=X(:,GBA(1,:)==1);
+% endmember2=X(:,IGBA(1,:)==1);
+% endmember3=X(:,Dbest_x(1,:));
+% endmember4=X(:,Mbest_x(1,:)==1);
+% SAM1 = SAMpipei(reference,endmember1);
+% [~,SAM1_idx]=sort(SAM1(1,1:P));
+% SAM1=SAM1(:,SAM1_idx);
+% SAM2 = SAMpipei(reference,endmember2);
+% [~,SAM2_idx]=sort(SAM2(1,1:P));
+% SAM2=SAM2(:,SAM2_idx);
+% SAM3 = SAMpipei(reference,endmember3);
+% [~,SAM3_idx]=sort(SAM3(1,1:P));
+% SAM3=SAM3(:,SAM3_idx);
+% SAM4 = SAMpipei(reference,endmember4);
+% [~,SAM4_idx]=sort(SAM4(1,1:P));
+% SAM4=SAM4(:,SAM4_idx);
+% 
+% subplot(3,4,4);
+% plot(num,reference(:,1),'k.-','DisplayName','referenc')
+% hold on;
+% plot(num,endmember1(:,SAM1(2,1)),'g.-','DisplayName','MODPSO')
+% hold on;
+% plot(num,endmember2(:,SAM2(2,1)),'b.-','DisplayName','IMODPSO')
+% hold on;
+% plot(num,endmember3(:,SAM3(2,1)),'m.-','DisplayName','(u+位)MODE')
+% hold on;
+% plot(num,endmember4(:,SAM4(2,1)),'r.-','DisplayName','MYEA')
+% hold on;
+% legend('referenc','MODPSO','IMODPSO','(u+λ)MODE','MY')
+% 
+%  
+% subplot(3,4,5);
+% plot(num,reference(:,2),'k.-','DisplayName','referenc')
+% hold on;
+% plot(num,endmember1(:,SAM1(2,2)),'g.-','DisplayName','MODPSO')
+% hold on;
+% plot(num,endmember2(:,SAM2(2,2)),'b.-','DisplayName','IMODPSO')
+% hold on;
+% plot(num,endmember3(:,SAM3(2,2)),'m.-','DisplayName','(u+位)MODE')
+% hold on;
+% plot(num,endmember4(:,SAM4(2,2)),'r.-','DisplayName','MYEA')
+% hold on;
+% legend('referenc','MODPSO','IMODPSO','(u+λ)MODE','MY')
+% 
+% 
+% subplot(3,4,6);
+% plot(num,reference(:,3),'k.-','DisplayName','referenc')
+% hold on;
+% plot(num,endmember1(:,SAM1(2,3)),'g.-','DisplayName','MODPSO')
+% hold on;
+% plot(num,endmember2(:,SAM2(2,3)),'b.-','DisplayName','IMODPSO')
+% hold on;
+% plot(num,endmember3(:,SAM3(2,3)),'m.-','DisplayName','(u+位)MODE')
+% hold on;
+% plot(num,endmember4(:,SAM4(2,3)),'r.-','DisplayName','MYEA')
+% hold on;
+% legend('referenc','MODPSO','IMODPSO','(u+λ)MODE','MY')
+% 
+% 
+% subplot(3,4,7); 
+% plot(num,reference(:,4),'k.-','DisplayName','referenc')
+% hold on;
+% plot(num,endmember1(:,SAM1(2,4)),'g.-','DisplayName','MODPSO')
+% hold on;
+% plot(num,endmember2(:,SAM2(2,4)),'b.-','DisplayName','IMODPSO')
+% hold on;
+% plot(num,endmember3(:,SAM3(2,4)),'m.-','DisplayName','(u+位)MODE')
+% hold on;
+% plot(num,endmember4(:,SAM4(2,4)),'r.-','DisplayName','MYEA')
+% hold on;
+% legend('referenc','MODPSO','IMODPSO','(u+λ)MODE','MY')
