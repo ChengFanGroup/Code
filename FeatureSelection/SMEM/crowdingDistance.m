@@ -1,0 +1,18 @@
+function CrowdDis = crowdingDistance(PopObj, FrontNo, MaxF)
+    [N,M]    = size(PopObj);
+    CrowdDis = zeros(1,N);
+    Front = find(FrontNo==MaxF);
+    if isempty(Front)
+        a = 1;
+    end
+    Fmax  = max(PopObj(Front,:),[],1);
+    Fmin  = min(PopObj(Front,:),[],1);
+    for i = 1 : M
+        [~,Rank] = sortrows(PopObj(Front,i));
+        CrowdDis(Front(Rank(1)))   = inf;
+        CrowdDis(Front(Rank(end))) = inf;
+        for j = 2 : length(Front)-1
+            CrowdDis(Front(Rank(j))) = CrowdDis(Front(Rank(j)))+(PopObj(Front(Rank(j+1)),i)-PopObj(Front(Rank(j-1)),i))/(Fmax(i)-Fmin(i));
+        end
+    end
+end

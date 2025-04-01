@@ -1,0 +1,89 @@
+clear;
+clc;
+close all;
+
+
+DataNames = {'ORL', 'colon', 'SRBCT', 'lymphoma', 'GLIOMA',  'Leukemia1',  'DLBCL','9Tumor',  'TOX_171',  'Brain1'}; 
+ DataNames = {'ORL', 'colon', 'SRBCT', 'lymphoma', 'GLIOMA',  'Leukemia1',  'DLBCL','9Tumor',  'TOX_171',  'Brain1',...
+     'leukemia', 'ALLAML', 'Carcinom',  'Brain2','CLL_SUB_111', 'SMK_CAN_187', 'gse19804', 'GLI_85'};
+runtimes = 1;
+DataNames = {'colon', 'SRBCT','GLIOMA','Leukemia1','DLBCL','TOX_171','Leukemia','ALLAML','Brain2','CLL_SUB_111', 'SMK_CAN_187', 'gse19804'};
+DataNames = {'ALLAML'};
+DataNames = {'BASEHOCK','BASEHOCK','cano_smiles_fps','Bioresponse','gisette','har'};
+
+path = './result/sub2/';
+
+for a = 1:length(DataNames)
+    dataset = DataNames{a};
+    folder=[path,char(dataset)];
+    if exist(folder) == 0
+        mkdir(folder);
+    end 
+    load(['D:/dataset/FS_DATASET/FS_DATASET_MAT/' dataset]);
+    FSVISION(data,label);
+    columns = {'训练集最优','训练集最优测试集结果','测试集最优','测试集最优大小','HV','time'};
+    writetable(table(columns), [path,char(dataset),'.csv']);
+    fid=fopen([path,char(dataset),'.csv'],'a');
+    Testacc = zeros(runtimes, 1);
+    Trainerr = zeros(runtimes, 1);
+    selFeature = zeros(runtimes, 1);
+    time = zeros(runtimes, 1);
+    besttestacc = zeros(runtimes, 1);
+
+    besttestsize = zeros(runtimes, 1);
+    hv = zeros(runtimes, 1);
+    besttraiacc = zeros(runtimes,1);
+    besttraintest = zeros(runtimes,1);
+
+
+    for h = 1:runtimes
+        disp(['K Fold ', int2str(h), ' on ',char(dataset)]);
+        t1 = clock; 
+
+        [traindata, trainlabel,testdata,testlabel,archive] = main(dataset,char(dataset));
+        t2 = clock;
+        time(h) = etime(t2,t1);
+
+        pop = archive(:,1:end - 2);
+        obj = archive(:,end-1 : end);
+        featNum = size(pop,2);
+        t = zeros(size(obj,1),1);
+        for i = 1:size(obj,1)
+            t(i) = testAcc(traindata,trainlabel,testdata,testlabel,logical(pop(i,:)));
+        end
+        [Testacc(h),loc] = max(t);
+        [Trainerr(h),loc2] = min(obj(:,2));
+        selFeature(h) = sum(pop(loc,:));
+        FSVISION(data(:,find(pop(loc,:))),label);
+        tobj = [obj(:,1),1 - t];
+        saveobj = ['SOEA' '-' char(DataNames(a)) '-obj-test-' char(string(h))]; 
+        save([path,char(dataset),'\',saveobj],'tobj');
+        
+      
+        besttraiacc(h) = 1-Trainerr(h);
+        besttraintest(h) = t(loc2);
+        besttestacc(h) = Testacc(h);
+        besttestsize(h) = selFeature(h);
+        popobj = [1-t  obj(:,1)];
+        hv(h) = HV(popobj,[1,featNum]);
+        tobj = [besttraiacc(h),besttraintest(h),besttestacc(h),besttestsize(h),hv(h),time(h)];
+        writematrix(tobj,[path,char(dataset),'.csv'],'WriteMode','append');
+        disp(['第',h,'轮：测试集最优  ','        测试集最优大小  ','         HV  ','         time  ']);
+        fprintf('     %.4f   %.4f   %.4f   %.4f \n', ...
+            besttestacc(h), besttestsize(h), ...
+            hv(h), time(h));
+        %fprintf(fid,'%d,%f,%f,%f,%f\n',h,1-Trainerr(h),Testacc(h),selFeature(h),time(h));
+
+    end
+    %fprintf(fid,'%s,%f,%f,%f,%f\n','mean',1-mean(Trainerr),mean(Testacc),mean(selFeature),mean(time));
+    %fclose(fid);
+    SaveData = [besttestacc besttestsize hv];
+    writematrix(SaveData,[path,dataset,'\',dataset,'.csv']);
+    columns = {'训练集最优','训练集最优测试集结果','测试集最优','测试集最优大小','HV','time'};
+    writetable(table(columns), [path,char(dataset),'.csv'],'WriteMode','append');
+    tobj = [mean(besttraiacc),mean(besttraintest),mean(besttestacc),mean(besttestsize),mean(hv),mean(time)];
+	writematrix(tobj,[path,char(dataset),'.csv'],'WriteMode','append');
+
+end
+
+
