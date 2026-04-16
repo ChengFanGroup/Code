@@ -1,0 +1,46 @@
+clear all;
+clc;
+
+ matDir = ['C:\Users\sunying123\Desktop\图引导带权重'];
+if ~exist(matDir,'dir')
+    mkdir(matDir);
+end
+  
+  dataidx = [7:22];
+
+for i= 1 : length(dataidx)
+   [R1,R2,datasetname,HV_test]=runn(dataidx(i),30);
+
+
+
+    matNameTrain = [matDir,'\','训练集选解'];
+    if ~exist(matNameTrain,'dir')
+        mkdir(matNameTrain);
+    end      
+    matNameTrain1 = [matNameTrain,'\',num2str(datasetname),'.mat'];
+    ACC=R1;
+    ACC_m=mean(ACC);
+    ACC_s=std(ACC);
+    save(matNameTrain1,'ACC','ACC_m','ACC_s');
+
+    matNameTest = [matDir,'\','测试集选解'];
+    if ~exist(matNameTest,'dir')
+        mkdir(matNameTest);
+    end
+    matNameTest1 = [matNameTest,'\',num2str(datasetname),'.mat'];
+    ACC=R2;
+    ACC_m=mean(ACC);
+    ACC_s=std(ACC);
+    save(matNameTest1,'ACC','ACC_m','ACC_s');
+    
+    %%  HV_test
+    mHV_test=mean(HV_test);
+    sHV_test=std(HV_test);
+    
+    matDir2 =[matDir,'\','HV_test'];
+    if ~exist(matDir2,'dir')
+        mkdir(matDir2);
+    end
+    matName1 = [matDir2,'\',num2str(datasetname),'.mat'];
+    save(matName1,'HV_test','mHV_test','sHV_test');
+end
